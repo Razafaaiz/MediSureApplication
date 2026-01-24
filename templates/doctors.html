@@ -1,0 +1,8 @@
+<h2>Available Doctors</h2>
+
+{% for d in doctors %}
+  <div style="margin-bottom:10px;">
+    <b>{{ d[1] }}</b> ({{ d[2] }})<br>
+    <a href="/book/{{ d[0] }}">Book Appointment</a>
+  </div>
+{% endfor %}

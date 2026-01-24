@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Migraine Prediction | MediSure</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/migraine.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="header-container">
+        <div class="logo">MediSure</div>
+        <nav class="nav">
+            <a href="/home" class="nav-btn">Home</a>
+        </nav>
+    </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+
+<div class="form-card">
+
+    <div class="form-header">
+        <h2>Migraine Prediction</h2>
+        <p>Upload report or manually enter neurological indicators</p>
+    </div>
+
+    <!-- PDF UPLOAD -->
+    <form method="POST" enctype="multipart/form-data" novalidate>
+
+        <div class="upload-box">
+            <h4>Upload Medical Report (PDF)</h4>
+            <input type="file" name="report" accept=".pdf">
+
+            <button type="submit" name="upload_pdf" class="secondary-btn">
+                Upload & Auto-Fill
+            </button>
+
+            {% if pdf_uploaded %}
+                <p class="success">✔ PDF processed. Fields auto-filled below.</p>
+            {% endif %}
+        </div>
+
+        <hr>
+
+        <!-- INPUT GRID -->
+        <div class="grid">
+
+            <div class="field">
+                <label>Visual Disturbances (0–3)</label>
+                <input type="number" min="0" max="3" name="Visual"
+                       value="{{ extracted.Visual if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>Intensity of Pain (0–3)</label>
+                <input type="number" min="0" max="3" name="Intensity"
+                       value="{{ extracted.Intensity if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>Age</label>
+                <input type="number" min="1" max="100" name="Age"
+                       value="{{ extracted.Age if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>Vertigo (0 = No, 1 = Yes)</label>
+                <input type="number" min="0" max="1" name="Vertigo"
+                       value="{{ extracted.Vertigo if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>Frequency (Attacks / Month)</label>
+                <input type="number" min="0" max="30" name="Frequency"
+                       value="{{ extracted.Frequency if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>Character of Pain (0–3)</label>
+                <input type="number" min="0" max="3" name="Character"
+                       value="{{ extracted.Character if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>Sensory Symptoms (0–3)</label>
+                <input type="number" min="0" max="3" name="Sensory"
+                       value="{{ extracted.Sensory if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>Duration of Attack (hours)</label>
+                <input type="number" min="0" max="72" name="Duration"
+                       value="{{ extracted.Duration if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>Vomiting (0 = No, 1 = Yes)</label>
+                <input type="number" min="0" max="1" name="Vomit"
+                       value="{{ extracted.Vomit if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>Nausea (0 = No, 1 = Yes)</label>
+                <input type="number" min="0" max="1" name="Nausea"
+                       value="{{ extracted.Nausea if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>DPF (0 = No, 1 = Yes)</label>
+                <input type="number" min="0" max="1" name="DPF"
+                       value="{{ extracted.DPF if extracted else '' }}" required>
+            </div>
+
+        </div>
+
+        <button type="submit" class="primary-btn">
+            Predict Migraine Risk
+        </button>
+
+    </form>
+
+    <div class="back-link">
+        <a href="/home">← Back to Home</a>
+    </div>
+
+</div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    © 2026 MediSure · AI-Powered Neurological Insights
+</footer>
+
+</body>
+</html>

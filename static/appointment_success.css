@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #ecfdf5, #f0f9ff);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #0f172a;
+}
+
+/* HEADER */
+.header {
+    background: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #16a34a;
+}
+
+nav a {
+    margin-left: 18px;
+    text-decoration: none;
+    font-weight: 500;
+    color: #2563eb;
+}
+
+/* MAIN */
+.main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 18px;
+}
+
+/* CARD */
+.success-card {
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(16px);
+    width: 100%;
+    max-width: 460px;
+    padding: 40px;
+    border-radius: 30px;
+    text-align: center;
+    box-shadow: 0 40px 90px rgba(0,0,0,0.15);
+}
+
+/* ICON */
+.icon {
+    font-size: 3.5rem;
+    margin-bottom: 18px;
+}
+
+/* TEXT */
+.success-card h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #16a34a;
+    margin-bottom: 14px;
+}
+
+.message {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #475569;
+}
+
+/* BUTTONS */
+.actions {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.primary-btn {
+    padding: 16px;
+    border-radius: 18px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    box-shadow: 0 20px 40px rgba(22,163,74,0.35);
+}
+
+.secondary-btn {
+    padding: 14px;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: #2563eb;
+    background: #eff6ff;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    padding: 18px;
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+    .success-card {
+        padding: 30px;
+    }
+
+    .success-card h2 {
+        font-size: 1.6rem;
+    }
+
+    .icon {
+        font-size: 3rem;
+    }
+}

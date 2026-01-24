@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | MediSure</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/login.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="header-container">
+        <div class="logo">MediSure</div>
+        <nav class="nav">
+            <a href="/">Home</a>
+            <a href="/signup" class="nav-btn">Create Account</a>
+        </nav>
+    </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+    <div class="login-card">
+
+        <div class="login-header">
+            <h2>Welcome Back</h2>
+            <p>Secure access to your health dashboard</p>
+        </div>
+
+        <form method="POST" action="/login" autocomplete="off" novalidate>
+
+            <div class="field">
+                <input type="email"
+                       name="email"
+                       required
+                       autocomplete="off"
+                       spellcheck="false">
+                <label>Email Address</label>
+            </div>
+
+            <div class="field">
+                <input type="password"
+                       name="password"
+                       required
+                       autocomplete="new-password">
+                <label>Password</label>
+            </div>
+
+            <button type="submit" class="login-btn">
+                Sign In
+            </button>
+
+            <div class="extra-links">
+                <a href="/forgot-password">Forgot Password?</a>
+                <span>•</span>
+                <a href="/signup">Create Account</a>
+            </div>
+
+        </form>
+    </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    © 2026 MediSure · Secure Health Platform
+</footer>
+
+</body>
+</html>

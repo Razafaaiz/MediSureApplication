@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Result</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/result.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="brand">MediSure</div>
+    <nav>
+        <a href="/home">Home</a>
+        <a href="/logout">Logout</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <!-- RESULT CARD -->
+    <section class="result-card">
+        <h1>{{ disease }} Report</h1>
+
+        <div class="result-box">
+            <span class="label">Detected Result</span>
+            <h2 class="result-text">{{ result }}</h2>
+            <p class="confidence">
+                This result is generated using trained medical AI models.
+            </p>
+        </div>
+
+        <div class="actions">
+            <a href="/consult-doctor" class="primary-btn">Consult a Doctor</a>
+            <a href="/home" class="secondary-btn">Back to Dashboard</a>
+        </div>
+    </section>
+
+    <!-- CHATBOT -->
+    <section class="chat-card">
+        <div class="chat-header">
+            <h3>Health Assistant</h3>
+            <span>AI Powered</span>
+        </div>
+
+        <div id="chat-box" class="chat-box">
+            <div class="bot-msg">
+                Hello, I’m your health assistant.<br>
+                I can guide you about <strong>{{ disease }}</strong>, precautions, and next steps.
+            </div>
+        </div>
+
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Ask about treatment...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </section>
+
+</main>
+
+<footer class="footer">
+    © 2026 MediSure · AI Health Prediction Platform
+</footer>
+
+<script>
+function sendMessage() {
+    const input = document.getElementById("user-input");
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    const chatBox = document.getElementById("chat-box");
+
+    chatBox.innerHTML += `<div class="user-msg">${msg}</div>`;
+    input.value = "";
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            message: msg,
+            disease: "{{ disease }}"
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        chatBox.innerHTML += `<div class="bot-msg">${data.reply.replaceAll("\n","<br>")}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
+}
+</script>
+
+</body>
+</html>
+

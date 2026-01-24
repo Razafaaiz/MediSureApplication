@@ -1,0 +1,16 @@
+<h2>Doctor Dashboard</h2>
+
+{% for a in appointments %}
+    <p>
+        Patient: {{ a.patient_name }} <br>
+        Date: {{ a.appointment_date }} <br>
+        Time: {{ a.appointment_time }} <br>
+
+        <a href="{{ a.zoom_link }}" target="_blank">
+            Start Zoom Consultation
+        </a>
+    </p>
+    <hr>
+{% endfor %}
+<a href="/home">🏠 Back to Home</a>
+<a href="/logout">Logout</a>

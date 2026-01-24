@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Appointments | MediSure</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/my_appointments.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="header-container">
+        <h1 class="logo">MediSure</h1>
+        <nav>
+            <a href="/home">Home</a>
+            <a href="/dashboard">Dashboard</a>
+        </nav>
+    </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+
+    <div class="page-header">
+        <h2>My Appointments</h2>
+        <p>Manage and attend your scheduled consultations</p>
+    </div>
+
+    {% if appointments %}
+
+    <div class="appointments-grid">
+        {% for appointment in appointments %}
+        <div class="appointment-card">
+
+            <div class="doctor-section">
+                <div class="avatar">
+                    {{ appointment[0][0] }}
+                </div>
+                <div>
+                    <h3>Dr. {{ appointment[0] }}</h3>
+                    <span class="speciality">Online Consultation</span>
+                </div>
+            </div>
+
+            <div class="details">
+                <div>
+                    <span>Date</span>
+                    <strong>{{ appointment[1] }}</strong>
+                </div>
+                <div>
+                    <span>Time</span>
+                    <strong>{{ appointment[2] }}</strong>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a href="{{ appointment[3] }}" target="_blank" class="join-btn">
+                    Join Video Call
+                </a>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+    {% if appointments|length > 5 %}
+        <p class="note">Showing latest 5 appointments</p>
+    {% endif %}
+    {% else %}
+        <div class="empty-state">
+            <h3>No Appointments Found</h3>
+            <p>You currently have no scheduled consultations.</p>
+            <a href="/consult-doctor" class="book-btn">Book Appointment</a>
+        </div>
+    {% endif %}
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    © 2026 MediSure · Secure Telemedicine Platform
+</footer>
+
+</body>
+</html>

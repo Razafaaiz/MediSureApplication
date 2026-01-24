@@ -1,0 +1,195 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #eef4ff, #f8fafc);
+    color: #0f172a;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
+.header {
+    background: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #2563eb;
+}
+
+nav a {
+    margin-left: 18px;
+    text-decoration: none;
+    color: #2563eb;
+    font-weight: 500;
+}
+
+/* MAIN */
+.main {
+    flex: 1;
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* PAGE HEADER */
+.page-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.page-header h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+}
+
+.page-header p {
+    color: #64748b;
+    margin-top: 6px;
+}
+
+/* GRID */
+.appointments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 26px;
+}
+
+/* CARD */
+.appointment-card {
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    border-radius: 22px;
+    padding: 26px;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.12);
+    transition: transform 0.25s ease;
+}
+
+.appointment-card:hover {
+    transform: translateY(-6px);
+}
+
+/* DOCTOR SECTION */
+.doctor-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 14px;
+}
+
+.doctor-section h3 {
+    font-size: 1.05rem;
+}
+
+.speciality {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+/* DETAILS */
+.details {
+    display: flex;
+    justify-content: space-between;
+    background: #f1f5f9;
+    padding: 14px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+}
+
+.details span {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.details strong {
+    display: block;
+    font-size: 0.95rem;
+}
+
+/* ACTION */
+.join-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 14px;
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: white;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 18px 40px rgba(22,163,74,0.35);
+}
+
+/* EMPTY STATE */
+.empty-state {
+    text-align: center;
+    background: white;
+    padding: 50px;
+    border-radius: 26px;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.12);
+}
+
+.empty-state h3 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    color: #64748b;
+    margin-bottom: 20px;
+}
+
+.book-btn {
+    display: inline-block;
+    padding: 14px 24px;
+    background: #2563eb;
+    color: white;
+    border-radius: 16px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    padding: 18px;
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+    .page-header h2 {
+        font-size: 1.7rem;
+    }
+}

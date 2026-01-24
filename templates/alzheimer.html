@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Alzheimer Prediction | MediSure</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/aizheimer.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="header-container">
+        <div class="logo">MediSure</div>
+        <nav class="nav">
+            <a href="/home" class="nav-btn">Home</a>
+        </nav>
+    </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+
+<div class="form-card">
+
+    <div class="form-header">
+        <h2>Alzheimer Disease Prediction</h2>
+        <p>Upload report or manually enter clinical values</p>
+    </div>
+
+    <!-- PDF UPLOAD -->
+    <form method="POST" enctype="multipart/form-data" novalidate>
+
+        <div class="upload-box">
+            <h4>Upload Medical Report (PDF)</h4>
+            <input type="file" name="report" accept=".pdf">
+            <button type="submit" name="upload_pdf" class="secondary-btn">
+                Upload & Auto-Fill
+            </button>
+
+            {% if pdf_uploaded %}
+                <p class="success">✔ PDF processed. Fields auto-filled below.</p>
+            {% endif %}
+        </div>
+
+        <hr>
+
+        <!-- INPUT GRID -->
+        <div class="grid">
+
+            <div class="field">
+                <label>Age</label>
+                <input type="number" name="Age" value="{{ extracted.Age if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>MMSE Score</label>
+                <input type="number" name="MMSE" value="{{ extracted.MMSE if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>Functional Assessment</label>
+                <input type="number" name="FunctionalAssessment" value="{{ extracted.FunctionalAssessment if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>ADL Score</label>
+                <input type="number" name="ADL" value="{{ extracted.ADL if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>Memory Complaints (0 / 1)</label>
+                <input type="number" min="0" max="1" name="MemoryComplaints"
+                       value="{{ extracted.MemoryComplaints if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>Behavioral Problems (0 / 1)</label>
+                <input type="number" min="0" max="1" name="BehavioralProblems"
+                       value="{{ extracted.BehavioralProblems if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>Confusion (0 / 1)</label>
+                <input type="number" min="0" max="1" name="Confusion"
+                       value="{{ extracted.Confusion if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>Disorientation (0 / 1)</label>
+                <input type="number" min="0" max="1" name="Disorientation"
+                       value="{{ extracted.Disorientation if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>Difficulty Completing Tasks (0 / 1)</label>
+                <input type="number" min="0" max="1" name="DifficultyCompletingTasks"
+                       value="{{ extracted.DifficultyCompletingTasks if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>Forgetfulness (0 / 1)</label>
+                <input type="number" min="0" max="1" name="Forgetfulness"
+                       value="{{ extracted.Forgetfulness if extracted else '' }}" required>
+            </div>
+
+            <div class="field">
+                <label>Family History of Alzheimer’s (0 / 1)</label>
+                <input type="number" min="0" max="1" name="FamilyHistoryAlzheimers"
+                       value="{{ extracted.FamilyHistoryAlzheimers if extracted else '' }}" required>
+            </div>
+
+        </div>
+
+        <button type="submit" class="primary-btn">
+            Predict Alzheimer Risk
+        </button>
+
+    </form>
+
+    <div class="back-link">
+        <a href="/home">← Back to Home</a>
+    </div>
+
+</div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    © 2026 MediSure · AI-Powered Healthcare
+</footer>
+
+</body>
+</html>

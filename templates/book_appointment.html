@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Appointment | MediSure</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/book_appointment.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="header-container">
+        <h1 class="logo">MediSure</h1>
+        <nav>
+            <a href="/consult-doctor">Doctors</a>
+            <a href="/home">Home</a>
+        </nav>
+    </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+    <div class="appointment-card">
+
+        <div class="card-header">
+            <h2>Book Appointment</h2>
+            <p>Select your preferred date and time</p>
+        </div>
+
+        <form method="post" class="appointment-form">
+
+            <div class="input-group">
+                <label>Date</label>
+                <input type="date" name="date" required>
+            </div>
+
+            <div class="input-group">
+                <label>Time</label>
+                <input type="time" name="time" required>
+            </div>
+
+            <button type="submit" class="confirm-btn">
+                Confirm Appointment
+            </button>
+
+        </form>
+
+        <div class="actions">
+            <a href="/consult-doctor">← Back to Doctors</a>
+            <a href="/home">🏠 Home</a>
+        </div>
+
+    </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    © 2026 MediSure · Secure Online Consultations
+</footer>
+
+</body>
+</html>
+

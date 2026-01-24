@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Breast Cancer Prediction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/breastcancer.css">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="brand">MediSure</div>
+    <nav>
+        <a href="/home">Home</a>
+        <a href="/consult-doctor">Consult</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Breast Cancer Risk Assessment</h1>
+    <p>Clinically inspired auto prediction system</p>
+</section>
+
+<main class="wrapper">
+    <form class="glass-card" method="POST" enctype="multipart/form-data" novalidate>
+
+        <!-- PDF SECTION -->
+        <div class="section">
+            <h3>Medical Report (Optional)</h3>
+            <p class="hint">Upload PDF to auto-fill detected values</p>
+
+            <div class="upload-area">
+                <input type="file" name="report" accept=".pdf">
+                <button name="upload_pdf" type="submit" class="ghost-btn">
+                    Auto-Fill from PDF
+                </button>
+            </div>
+
+            {% if pdf_uploaded %}
+                <div class="success-badge">PDF processed successfully</div>
+            {% endif %}
+        </div>
+
+        <!-- INPUT SECTION -->
+        <div class="section">
+            <h3>Manual Medical Parameters</h3>
+
+            <div class="grid">
+
+                <div class="field">
+                    <input type="number" name="radius_mean" min="0" max="30" step="0.1"
+                           value="{{ extracted.radius_mean if extracted else '' }}" required>
+                    <label>Radius Mean (0.0 – 30.0)</label>
+                </div>
+
+                <div class="field">
+                    <input type="number" name="texture_mean" min="0" max="40" step="0.1"
+                           value="{{ extracted.texture_mean if extracted else '' }}" required>
+                    <label>Texture Mean (0.0 – 40.0)</label>
+                </div>
+
+                <div class="field">
+                    <input type="number" name="perimeter_mean" min="0" max="200" step="0.1"
+                           value="{{ extracted.perimeter_mean if extracted else '' }}" required>
+                    <label>Perimeter Mean (0.0 – 200.0)</label>
+                </div>
+
+                <div class="field">
+                    <input type="number" name="area_mean" min="0" max="3000" step="1"
+                           value="{{ extracted.area_mean if extracted else '' }}" required>
+                    <label>Area Mean (0.0 – 3000.0)</label>
+                </div>
+
+                <div class="field full">
+                    <input type="number" name="smoothness_mean" min="0" max="1" step="0.01"
+                           value="{{ extracted.smoothness_mean if extracted else '' }}" required>
+                    <label>Smoothness Mean (0.0 – 1.0)</label>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ACTION -->
+        <button type="submit" class="cta">
+            Predict Breast Cancer Risk
+        </button>
+
+        <a href="/home" class="back">← Back to Dashboard</a>
+
+    </form>
+</main>
+
+<footer class="footer">
+    © 2026 MediSure · Medical Auto Platform
+</footer>
+
+</body>
+</html>

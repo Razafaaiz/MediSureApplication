@@ -1,0 +1,157 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #eef4ff, #f8fafc);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #0f172a;
+}
+
+/* HEADER */
+.header {
+    background: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #2563eb;
+}
+
+nav a {
+    margin-left: 18px;
+    text-decoration: none;
+    font-weight: 500;
+    color: #2563eb;
+}
+
+/* MAIN */
+.main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 18px;
+}
+
+/* CARD */
+.appointment-card {
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(16px);
+    width: 100%;
+    max-width: 420px;
+    padding: 34px;
+    border-radius: 28px;
+    box-shadow: 0 40px 90px rgba(0,0,0,0.16);
+}
+
+/* HEADER */
+.card-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.card-header h2 {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.card-header p {
+    color: #64748b;
+    margin-top: 6px;
+}
+
+/* FORM */
+.appointment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #475569;
+}
+
+input {
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    border-radius: 14px;
+    border: 1px solid #cbd5f5;
+    outline: none;
+}
+
+input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
+}
+
+/* BUTTON */
+.confirm-btn {
+    margin-top: 10px;
+    padding: 16px;
+    border: none;
+    border-radius: 18px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    cursor: pointer;
+    box-shadow: 0 25px 45px rgba(37,99,235,0.35);
+}
+
+/* ACTION LINKS */
+.actions {
+    margin-top: 26px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.actions a {
+    font-size: 0.85rem;
+    text-decoration: none;
+    color: #2563eb;
+    font-weight: 500;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    padding: 18px;
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+    .appointment-card {
+        padding: 26px;
+    }
+
+    .card-header h2 {
+        font-size: 1.6rem;
+    }
+}

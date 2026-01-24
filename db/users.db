@@ -1,0 +1,14 @@
+CREATE TABLE doctors (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    specialization TEXT,
+    email TEXT
+);
+CREATE TABLE appointments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    patient_email TEXT,
+    doctor_email TEXT,
+    date TEXT,
+    time TEXT,
+    zoom_link TEXT
+);
