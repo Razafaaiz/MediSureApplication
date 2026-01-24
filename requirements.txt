@@ -5,3 +5,5 @@ pandas
 scikit-learn
 joblib
 xgboost
+requests
+flask-cors
