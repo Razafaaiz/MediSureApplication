@@ -20,8 +20,7 @@ from utils.model_loader import *
 from utils.preprocess import *
 from flask import Flask, render_template, request, redirect, url_for, session
 import random
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+
 from flask import Flask, render_template, request, redirect, session, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import session, url_for
