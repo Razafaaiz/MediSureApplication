@@ -44,8 +44,8 @@ app.secret_key = "super_secret_key_123"
 sqlite3.connect("database.db", timeout=10)
 import os
 
-MAILERSEND_API_KEY = os.getenv("mlsn.1a81656e0f5b08c21418b9133047822277d118ed70aa021c595d76992a57b04c")
-SENDER_EMAIL = "noreply@test-yxj6j9vw174do2r.mlsender.net"
+#MAILERSEND_API_KEY = os.getenv("mlsn.1a81656e0f5b08c21418b9133047822277d118ed70aa021c595d76992a57b04c")
+#SENDER_EMAIL = "noreply@test-yxj6j9vw174do2r.mlsender.net"
 ZOOM_ACCOUNT_ID = "4De-CZigQj-6wfHOXRvgUA"
 ZOOM_CLIENT_ID = "vhxEvQbVTnmfiK_3P1fang"
 ZOOM_CLIENT_SECRET = "ipPPcfz1Pcx6b57ddpop8EtYyDvjBZAt"
@@ -111,30 +111,30 @@ def create_zoom_meeting(topic, start_time):
 
 
 
+from mailersend import Email
+import os
+
+MAILERSEND_API_KEY = os.getenv("mlsn.1a81656e0f5b08c21418b9133047822277d118ed70aa021c595d76992a57b04c")
+
+
+
 def send_email(to_email, subject, body):
-    url = "https://api.mailersend.com/v1/email"
-
-    headers = {
-        "Authorization": f"Bearer {MAILERSEND_API_KEY}",
-        "Content-Type": "application/json"
-    }
-
-    data = {
+    mailer = Email
+    response = mailer.send({
         "from": {
-            "email": SENDER_EMAIL,
-            "name": "Health Check System"
+            "email": "noreply@test-yxj6j9vw174do2r.mlsender.net",
+            "name": "MediSure"
         },
         "to": [
             {"email": to_email}
         ],
         "subject": subject,
         "text": body
-    }
+    })
 
-    response = requests.post(url, headers=headers, json=data)
+    print("MailerSend response:", response)
 
-    if response.status_code != 202:
-        raise Exception(response.text)
+
 
 
 
@@ -245,18 +245,16 @@ def forgot_password():
         session["otp"] = otp
         session["email"] = email
 
-        try:
-            send_email(
-                to_email=email,
-                subject="Your OTP - Health Check System",
-                body=f"Your OTP is {otp}. Valid for 5 minutes."
-            )
-            return redirect(url_for("verify_otp"))
+        send_email(
+            email,
+            "Your OTP - MediSure",
+            f"Your OTP is {otp}. Valid for 5 minutes."
+        )
 
-        except Exception as e:
-            return f"Email error: {e}"
+        return redirect(url_for("verify_otp"))
 
     return render_template("forget_password.html")
+
 
 
 
