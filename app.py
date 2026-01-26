@@ -32,7 +32,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 from chat_data import DISEASE_REMEDIES
 from flask import jsonify
-from pdf_reader import extract_values_from_pdf, extract_breast_pdf,extract_heart_pdf,extract_alzheimers_pdf,extract_migraine_pdf,extract_typhoid_pdf
+from pdf_reader import extract_values_from_pdf, extract_breast_pdf,extract_heart_pdf,extract_alzheimer_pdf,extract_migraine_pdf,extract_typhoid_pdf
 import os
 
 
@@ -441,7 +441,7 @@ def my_appointments():
 
     appointments = cur.fetchall()
     conn.close()
-    appointments = appointments[:5]
+    appointments = appointments[5:]
     return render_template(
         "my_appointments.html",
         appointments=appointments
@@ -681,7 +681,7 @@ def alzheimer():
                 pdf_path = os.path.join("uploads", pdf.filename)
                 pdf.save(pdf_path)
 
-                extracted = extract_alzheimers_pdf(pdf_path)
+                extracted = extract_alzheimer_pdf(pdf_path)
                 pdf_uploaded = True
 
             return render_template(
@@ -923,6 +923,10 @@ def disease():
 # ================= RUN ================= #
 import os
 
+import os
+
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
 
 

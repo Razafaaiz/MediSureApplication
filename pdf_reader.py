@@ -65,7 +65,7 @@ def extract_breast_pdf(pdf):
 import pdfplumber
 import re
 
-def extract_alzheimers_pdf(pdf_path):
+def extract_alzheimer_pdf(pdf_path):
     data = {}
 
     with pdfplumber.open(pdf_path) as pdf:

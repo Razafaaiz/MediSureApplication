@@ -21,3 +21,5 @@ streamlit
 sendgrid
 pdfplumber
 gunicorn
+requests
+
