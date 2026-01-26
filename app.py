@@ -8,7 +8,6 @@ from utils.zoom import create_zoom_meeting
 from utils.email_service import send_email
 from email_utils import send_otp_email
 from auth import generate_otp, get_db, update_password, email_exists
-import smtplib
 from email.message import EmailMessage
 from flask import session
 from auth import update_password, email_exists, generate_otp
@@ -20,7 +19,6 @@ import pandas as pd
 from utils.model_loader import *
 from utils.preprocess import *
 from flask import Flask, render_template, request, redirect, url_for, session
-import smtplib
 import random
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -45,8 +43,10 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = "super_secret_key_123"
 sqlite3.connect("database.db", timeout=10)
-EMAIL_ADDRESS = "razafaiz003@gmail.com"
-EMAIL_PASSWORD = "zjphoxqsdhejsgvf"
+import os
+
+MAILERSEND_API_KEY = os.getenv("mlsn.1a81656e0f5b08c21418b9133047822277d118ed70aa021c595d76992a57b04c")
+SENDER_EMAIL = "noreply@test-yxj6j9vw174do2r.mlsender.net"
 ZOOM_ACCOUNT_ID = "4De-CZigQj-6wfHOXRvgUA"
 ZOOM_CLIENT_ID = "vhxEvQbVTnmfiK_3P1fang"
 ZOOM_CLIENT_SECRET = "ipPPcfz1Pcx6b57ddpop8EtYyDvjBZAt"
@@ -113,23 +113,30 @@ def create_zoom_meeting(topic, start_time):
 
 
 def send_email(to_email, subject, body):
-    try:
-        msg = MIMEMultipart()
-        msg["From"] = EMAIL_ADDRESS
-        msg["To"] = to_email
-        msg["Subject"] = subject
+    url = "https://api.mailersend.com/v1/email"
 
-        msg.attach(MIMEText(body, "plain"))
+    headers = {
+        "Authorization": f"Bearer {MAILERSEND_API_KEY}",
+        "Content-Type": "application/json"
+    }
 
-        server = smtplib.SMTP("smtp.gmail.com", 587, timeout=10)
-        server.starttls()
-        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-        server.send_message(msg)
-        server.quit()
+    data = {
+        "from": {
+            "email": SENDER_EMAIL,
+            "name": "Health Check System"
+        },
+        "to": [
+            {"email": to_email}
+        ],
+        "subject": subject,
+        "text": body
+    }
 
-        print(f"✅ Email sent to {to_email}")
-    except Exception as e:
-        print("❌ Email error:", e)
+    response = requests.post(url, headers=headers, json=data)
+
+    if response.status_code != 202:
+        raise Exception(response.text)
+
 
 
 
@@ -240,26 +247,18 @@ def forgot_password():
         session["email"] = email
 
         try:
-            msg = MIMEMultipart()
-            msg["From"] = EMAIL_ADDRESS
-            msg["To"] = email
-            msg["Subject"] = "Your OTP - Health Check System"
-
-            body = f"Your OTP is {otp}. Valid for 5 minutes."
-            msg.attach(MIMEText(body, "plain"))
-
-            server = smtplib.SMTP("smtp.gmail.com", 587, timeout=10)
-            server.starttls()
-            server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-            server.sendmail(EMAIL_ADDRESS, email, msg.as_string())
-            server.quit()
-
+            send_email(
+                to_email=email,
+                subject="Your OTP - Health Check System",
+                body=f"Your OTP is {otp}. Valid for 5 minutes."
+            )
             return redirect(url_for("verify_otp"))
 
         except Exception as e:
             return f"Email error: {e}"
 
     return render_template("forget_password.html")
+
 
 
 
