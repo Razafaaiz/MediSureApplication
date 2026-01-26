@@ -35,7 +35,6 @@ import os
 
 
 
-load_dotenv()
 
 
 
@@ -114,12 +113,17 @@ def create_zoom_meeting(topic, start_time):
 
 
 
-import requests
-import os
+# ================= EMAIL (MAILERSEND) ================= #
 
-MAILERSEND_API_KEY = os.getenv("MAILERSEND_API_KEY")
+import os
+import requests
+
+MAILERSEND_API_KEY = os.getenv("mlsn.1a81656e0f5b08c21418b9133047822277d118ed70aa021c595d76992a57b04c")
 
 def send_email(to_email, subject, body):
+    if not MAILERSEND_API_KEY:
+        raise Exception("MAILERSEND_API_KEY is missing in Render Environment")
+
     url = "https://api.mailersend.com/v1/email"
 
     headers = {
@@ -127,9 +131,9 @@ def send_email(to_email, subject, body):
         "Content-Type": "application/json"
     }
 
-    data = {
+    payload = {
         "from": {
-            "email": "test-yxj6l9vw174do2r.mlsender.net",
+            "email": "noreply@test-yxj6l9vw174do2r.mlsender.net",
             "name": "MediSure"
         },
         "to": [
@@ -142,24 +146,13 @@ def send_email(to_email, subject, body):
         "text": body
     }
 
-    response = requests.post(url, headers=headers, json=data)
+    response = requests.post(url, headers=headers, json=payload)
+
+    print("MailerSend status:", response.status_code)
+    print("MailerSend response:", response.text)
 
     if response.status_code != 202:
-        print("❌ Mail error:", response.text)
         raise Exception(response.text)
-
-    print("✅ Email sent successfully")
-
-
-
-
-
-
-
-
-
-
-
 # ================= LOAD ALL MODELS ================= #
 
 # Diabetes
