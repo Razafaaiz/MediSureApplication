@@ -6,4 +6,3 @@ env/
 # Python cache
 __pycache__/
 *.pyc
-.env/
