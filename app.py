@@ -1,4 +1,3 @@
-from mailersend import Email
 import os
 import requests
 import base64
@@ -115,33 +114,42 @@ def create_zoom_meeting(topic, start_time):
 
 
 
-MAILERSEND_API_KEY = os.getenv("mlsn.1a81656e0f5b08c21418b9133047822277d118ed70aa021c595d76992a57b04c")
-mailer = Email(MAILERSEND_API_KEY)
+import requests
+import os
 
+MAILERSEND_API_KEY = os.getenv("MAILERSEND_API_KEY")
 
 def send_email(to_email, subject, body):
-    try:
-        email_data = {
-            "from": {
-                "email": "test-yxj6l9vw174do2r.mlsender.net",
-                "name": "MediSure"
-            },
-            "to": [
-                {
-                    "email": to_email,
-                    "name": "User"
-                }
-            ],
-            "subject": subject,
-            "text": body
-        }
+    url = "https://api.mailersend.com/v1/email"
 
-        response = mailer.send(email_data)
-        print("✅ Mail sent:", response)
+    headers = {
+        "Authorization": f"Bearer {MAILERSEND_API_KEY}",
+        "Content-Type": "application/json"
+    }
 
-    except Exception as e:
-        print("❌ MailerSend error:", e)
-        raise
+    data = {
+        "from": {
+            "email": "test-yxj6l9vw174do2r.mlsender.net",
+            "name": "MediSure"
+        },
+        "to": [
+            {
+                "email": to_email,
+                "name": "User"
+            }
+        ],
+        "subject": subject,
+        "text": body
+    }
+
+    response = requests.post(url, headers=headers, json=data)
+
+    if response.status_code != 202:
+        print("❌ Mail error:", response.text)
+        raise Exception(response.text)
+
+    print("✅ Email sent successfully")
+
 
 
 
@@ -264,6 +272,7 @@ def forgot_password():
         return redirect(url_for("verify_otp"))
 
     return render_template("forget_password.html")
+
 
 
 
