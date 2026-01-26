@@ -39,6 +39,7 @@ import os
 
 
 
+
 app = Flask(__name__)
 app.secret_key = "super_secret_key_123"
 sqlite3.connect("database.db", timeout=10)
@@ -118,7 +119,7 @@ def create_zoom_meeting(topic, start_time):
 import os
 import requests
 
-MAILERSEND_API_KEY = os.getenv("mlsn.1a81656e0f5b08c21418b9133047822277d118ed70aa021c595d76992a57b04c")
+MAILERSEND_API_KEY = os.getenv("MAILERSEND_API_KEY")
 
 def send_email(to_email, subject, body):
     if not MAILERSEND_API_KEY:
@@ -153,6 +154,18 @@ def send_email(to_email, subject, body):
 
     if response.status_code != 202:
         raise Exception(response.text)
+
+
+
+
+
+
+
+
+
+
+
+
 # ================= LOAD ALL MODELS ================= #
 
 # Diabetes
@@ -265,7 +278,6 @@ def forgot_password():
         return redirect(url_for("verify_otp"))
 
     return render_template("forget_password.html")
-
 
 
 
