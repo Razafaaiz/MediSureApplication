@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 import os
 import requests
 import base64
@@ -119,9 +121,10 @@ def create_zoom_meeting(topic, start_time):
 import os
 import requests
 
-
-
 MAILERSEND_API_KEY = os.getenv("MAILERSEND_API_KEY")
+
+print("API KEY LOADED:", bool(MAILERSEND_API_KEY))
+
 
 def send_email(to_email, subject, otp):
     url = "https://api.mailersend.com/v1/email"
