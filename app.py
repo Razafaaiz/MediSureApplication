@@ -255,26 +255,7 @@ def logout():
     session.clear()
     return redirect("/login")
 
-@app.route("/forgot-password", methods=["GET", "POST"])
-def forgot_password():
-    if request.method == "POST":
-        email = request.form["email"]
-        otp = random.randint(100000, 999999)
-        session["otp"] = otp
-        session["email"] = email
 
-        ok = send_email(
-            email,
-            "Your OTP – MediSure",
-            f"<h2>Your OTP is {otp}</h2><p>Valid for 5 minutes.</p>"
-        )
-
-        if not ok:
-            return "Email sending failed"
-
-        return redirect(url_for("verify_otp"))
-
-    return render_template("forget_password.html")
 
 @app.route("/forgot-password", methods=["GET", "POST"])
 def forgot():
@@ -299,7 +280,7 @@ def forgot():
         if not ok:
             return "❌ Email sending failed"
 
-        return redirect("/verify")
+        return redirect("/verify-otp")
 
     return render_template("forget_password.html")
 
