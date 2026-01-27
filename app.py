@@ -126,9 +126,6 @@ import requests
 RESEND_API_KEY = os.getenv("RESEND_API_KEY")
 
 def send_email(to_email, subject, html):
-    if not RESEND_API_KEY:
-        raise Exception("RESEND_API_KEY missing")
-
     response = requests.post(
         "https://api.resend.com/emails",
         headers={
@@ -136,7 +133,7 @@ def send_email(to_email, subject, html):
             "Content-Type": "application/json",
         },
         json={
-            "from": "MediSure <onboarding@resend.dev>",
+            "from": "onboarding@resend.dev",
             "to": [to_email],
             "subject": subject,
             "html": html,
@@ -144,11 +141,11 @@ def send_email(to_email, subject, html):
         timeout=10
     )
 
-    if response.status_code != 200:
-        print("EMAIL ERROR:", response.text)
-        return False
+    print("RESEND STATUS:", response.status_code)
+    print("RESEND RESPONSE:", response.text)
 
-    return True
+    return response.status_code == 200
+
 
 
 def send_otp_email(email, otp):
@@ -272,19 +269,20 @@ def forgot_password():
     if request.method == "POST":
         email = request.form["email"]
         otp = random.randint(100000, 999999)
-
-        session["otp"] = str(otp)
+        session["otp"] = otp
         session["email"] = email
-        session["otp_time"] = time.time()
 
-        success = send_otp_email(email, otp)
+        ok = send_email(
+            email,
+            "Your OTP – MediSure",
+            f"<h2>Your OTP is {otp}</h2><p>Valid for 5 minutes.</p>"
+        )
 
-        if not success:
+        if not ok:
             return "Email sending failed"
 
         return redirect(url_for("verify_otp"))
 
-    return render_template("forget_password.html")
 
 
 
