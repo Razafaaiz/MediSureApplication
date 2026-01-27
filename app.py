@@ -123,7 +123,7 @@ import requests
 
 MAILERSEND_API_KEY = os.getenv("MAILERSEND_API_KEY")
 
-def send_email(to_email, subject, body):
+def send_email(to_email, subject, otp):
     url = "https://api.mailersend.com/v1/email"
 
     headers = {
@@ -136,17 +136,14 @@ def send_email(to_email, subject, body):
             "email": "no-reply@test-yxj6j9vw174do2r.mlsender.net",
             "name": "MediSure"
         },
-        "to": [
-            {"email": to_email}
-        ],
+        "to": [{"email": to_email}],
         "subject": subject,
-        "text": body
+        "text": f"Your OTP code is: {otp}. It is valid for 5 minutes."
     }
 
     response = requests.post(url, headers=headers, json=data)
+    print(response.status_code, response.text)
 
-    print(response.status_code)
-    print(response.text)
 
 
 
