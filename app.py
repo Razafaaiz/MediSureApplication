@@ -280,8 +280,10 @@ def forgot_password():
 
         if not ok:
             return "Email sending failed"
-    return redirect(url_for("verify_otp"))
 
+        return redirect(url_for("verify_otp"))
+
+    return render_template("forget_password.html")
 
 
 
