@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 import os
 import requests
 import base64
@@ -46,9 +48,18 @@ import os
 app = Flask(__name__)
 app.secret_key = "super_secret_key_123"
 sqlite3.connect("database.db", timeout=10)
+
+#EMAIL_ADDRESS = "razafaiz003@gmail.com"
+#EMAIL_PASSWORD = "zjphoxqsdhejsgvf"
 import os
-EMAIL_ADDRESS = "razafaiz003@gmail.com"
-EMAIL_PASSWORD = "zjphoxqsdhejsgvf"
+import smtplib
+
+EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
+EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+
+print("EMAIL LOADED:", EMAIL_ADDRESS)
+print("PASSWORD EXISTS:", bool(EMAIL_PASSWORD))
+# ================= ZOOM INTEGRATION ================= #
 ZOOM_ACCOUNT_ID = "4De-CZigQj-6wfHOXRvgUA"
 ZOOM_CLIENT_ID = "vhxEvQbVTnmfiK_3P1fang"
 ZOOM_CLIENT_SECRET = "ipPPcfz1Pcx6b57ddpop8EtYyDvjBZAt"
