@@ -250,6 +250,7 @@ def dashboard():
     return render_template("index.html")
 
 
+
 @app.route("/logout")
 def logout():
     session.clear()
@@ -304,7 +305,8 @@ def verify():
             return "OTP expired"
 
         if user_otp == saved_otp:
-            return "✅ OTP Verified (SUCCESS)"
+            session["reset_email"] = session["email"]
+            return redirect(url_for("reset_password"))
 
         return "❌ Invalid OTP"
 
@@ -510,12 +512,12 @@ def public_home():
 def about():
     return render_template("about.html")
 
-
 @app.route("/")
 def index():
     if "user" not in session:
         return redirect(url_for("login"))
     return render_template("index.html")
+
 
 
 # ---------------- DIABETES ---------------- #
@@ -856,11 +858,12 @@ def typhoid():
 
     if request.method == "POST":
 
-        # PDF upload button clicked
+        # ---------- PDF UPLOAD ----------
         if "upload_pdf" in request.form:
             pdf = request.files.get("report")
 
             if pdf and pdf.filename:
+                os.makedirs("uploads", exist_ok=True)
                 pdf_path = os.path.join("uploads", pdf.filename)
                 pdf.save(pdf_path)
 
@@ -873,44 +876,49 @@ def typhoid():
                 pdf_uploaded=pdf_uploaded
             )
 
+        # ---------- FORM DATA ----------
+        try:
+            PlateletCount = int(request.form.get("PlateletCount", 0))
+            Age = int(request.form.get("Age", 0))
+            Hemoglobin = float(request.form.get("Hemoglobin", 0))
+            Calcium = float(request.form.get("Calcium", 0))
+            Potassium = float(request.form.get("Potassium", 0))
+            TreatmentDuration = int(request.form.get("TreatmentDuration", 0))
+            BloodCulture_Bacteria = int(request.form.get("BloodCultureBacteria", 0))
+            SymptomsSeverity = int(request.form.get("SymptomsSeverity", 0))
+            UrineCultureBacteria = int(request.form.get("UrineCultureBacteria", 0))
+            CurrentMedication = int(request.form.get("CurrentMedication", 0))
+            Gender = int(request.form.get("Gender", 0))
 
-        PlateletCount = int(request.form.get("PlateletCount"))
-        Age = int(request.form.get("Age"))
-        Hemoglobin = float(request.form.get("Hemoglobin"))
-        Calcium = float(request.form.get("Calcium"))
-        Potassium = float(request.form.get("Potassium"))
-        TreatmentDuration = int(request.form.get("TreatmentDuration"))
-        BloodCulture_Bacteria = int(request.form.get("BloodCultureBacteria"))
-        SymptomsSeverity = int(request.form.get("SymptomsSeverity"))
-        UrineCultureBacteria = int(request.form.get("UrineCultureBacteria"))
-        CurrentMedication = int(request.form.get("CurrentMedication"))
-        Gender = int(request.form.get("Gender"))
-        
+            values = [
+                PlateletCount,
+                Age,
+                Hemoglobin,
+                Calcium,
+                Potassium,
+                TreatmentDuration,
+                BloodCulture_Bacteria,
+                SymptomsSeverity,
+                UrineCultureBacteria,
+                CurrentMedication,
+                Gender
+            ]
 
-        values = [
-            int(PlateletCount),
-            int(Age),
-            float(Hemoglobin),
-            float(Calcium),
-            float(Potassium),
-            int(TreatmentDuration),
-            int(BloodCulture_Bacteria),
-            int(SymptomsSeverity),
-            int(UrineCultureBacteria),
-            int(CurrentMedication),
-            str(Gender)
-        ]
-                     
-        pred = typhoid_model.predict([values])[0]
-        result = "Typhoid Detected" if pred == 1 else "No Typhoid"
+            pred = typhoid_model.predict([values])[0]
+            result = "Typhoid Detected" if pred == 1 else "No Typhoid"
 
-        return render_template(
-            "result.html",
-            disease="Typhoid",
-            result=result
-        )
+            return render_template(
+                "result.html",
+                disease="Typhoid",
+                result=result
+            )
+
+        except Exception as e:
+            print("TYPHOID ERROR:", e)
+            return "Form Error – Check console", 500
 
     return render_template("typhoid.html")
+
 
 
 

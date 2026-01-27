@@ -23,5 +23,6 @@ pdfplumber
 gunicorn
 requests
 mailersend
+PYPDF2
 
 
