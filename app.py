@@ -119,12 +119,11 @@ def create_zoom_meeting(topic, start_time):
 import os
 import requests
 
+
+
 MAILERSEND_API_KEY = os.getenv("MAILERSEND_API_KEY")
 
 def send_email(to_email, subject, body):
-    if not MAILERSEND_API_KEY:
-        raise Exception("MAILERSEND_API_KEY is missing in Render Environment")
-
     url = "https://api.mailersend.com/v1/email"
 
     headers = {
@@ -132,28 +131,23 @@ def send_email(to_email, subject, body):
         "Content-Type": "application/json"
     }
 
-    payload = {
+    data = {
         "from": {
-            "email": "noreply@test-yxj6l9vw174do2r.mlsender.net",
+            "email": "no-reply@test-yxj6j9vw174do2r.mlsender.net",
             "name": "MediSure"
         },
         "to": [
-            {
-                "email": to_email,
-                "name": "User"
-            }
+            {"email": to_email}
         ],
         "subject": subject,
         "text": body
     }
 
-    response = requests.post(url, headers=headers, json=payload)
+    response = requests.post(url, headers=headers, json=data)
 
-    print("MailerSend status:", response.status_code)
-    print("MailerSend response:", response.text)
+    print(response.status_code)
+    print(response.text)
 
-    if response.status_code != 202:
-        raise Exception(response.text)
 
 
 
