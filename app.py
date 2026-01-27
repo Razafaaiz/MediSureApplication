@@ -51,6 +51,8 @@ sqlite3.connect("database.db", timeout=10)
 #RESEND_API_KEY = re_J5A1KkHB_8gpprJVn6BHGG7Gv2bBJs4ss
 #RESEND_API_KEY = re_J5A1KkHB_8gpprJVn6BHGG7Gv2bBJs4ss
 #FROM_EMAIL=onboarding@resend.dev
+#BREVO_SMTP_LOGIN = a0f158001@smtp-brevo.com
+#BREVO_SMTP_PASSWORD = rjIXKfUSHWATzLs7
 
 # ================= ZOOM INTEGRATION ================= #
 ZOOM_ACCOUNT_ID = "4De-CZigQj-6wfHOXRvgUA"
@@ -123,27 +125,34 @@ def create_zoom_meeting(topic, start_time):
 # ================= EMAIL (MAILERSEND) ================= #
 
 import requests
-from flask_mail import Mail, Message
-app.config["MAIL_SERVER"] = "smtp-relay.brevo.com"
-app.config["MAIL_PORT"] = 587
-app.config["MAIL_USE_TLS"] = True
-app.config["MAIL_USERNAME"] = os.getenv("BREVO_SMTP_LOGIN")
-app.config["MAIL_PASSWORD"] = os.getenv("BREVO_SMTP_PASSWORD")
-app.config["MAIL_DEFAULT_SENDER"] = "razafaiz003@gmail.com"
+import os
 
-mail = Mail(app)
-def send_email(to, subject, body):
-    try:
-        msg = Message(
-            subject=subject,
-            recipients=[to],
-            html=body
-        )
-        mail.send(msg)
-        return True
-    except Exception as e:
-        print("EMAIL ERROR:", e)
-        return False
+def send_email(to, subject, html):
+    url = "https://api.brevo.com/v3/smtp/email"
+
+    headers = {
+        "accept": "application/json",
+        "api-key": os.getenv("BREVO_API_KEY"),
+        "content-type": "application/json"
+    }
+
+    data = {
+        "sender": {
+            "name": "MediSure",
+            "email": "razafaiz003@gmail.com"
+        },
+        "to": [
+            {"email": to}
+        ],
+        "subject": subject,
+        "htmlContent": html
+    }
+
+    response = requests.post(url, headers=headers, json=data, timeout=10)
+    print("BREVO API:", response.status_code, response.text)
+
+    return response.status_code in [200, 201, 202]
+
 
 
 
