@@ -11,7 +11,7 @@ from utils.zoom import create_zoom_meeting
 from utils.email_service import send_email
 from email_utils import send_otp_email
 from auth import generate_otp, get_db, update_password, email_exists
-from email.message import EmailMessage
+
 from flask import session
 from auth import update_password, email_exists, generate_otp
 from flask import session, redirect, url_for
@@ -23,10 +23,7 @@ from utils.model_loader import *
 from utils.preprocess import *
 from flask import Flask, render_template, request, redirect, url_for, session
 import random
-import smtplib
-from smtplib import SMTP
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+
 from flask import Flask, render_template, request, redirect, session, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import session, url_for
@@ -51,14 +48,8 @@ sqlite3.connect("database.db", timeout=10)
 
 #EMAIL_ADDRESS = "razafaiz003@gmail.com"
 #EMAIL_PASSWORD = "zjphoxqsdhejsgvf"
-import os
-import smtplib
+#RESEND_API_KEY = re_J5A1KkHB_8gpprJVn6BHGG7Gv2bBJs4ss
 
-EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
-EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
-
-print("EMAIL LOADED:", EMAIL_ADDRESS)
-print("PASSWORD EXISTS:", bool(EMAIL_PASSWORD))
 # ================= ZOOM INTEGRATION ================= #
 ZOOM_ACCOUNT_ID = "4De-CZigQj-6wfHOXRvgUA"
 ZOOM_CLIENT_ID = "vhxEvQbVTnmfiK_3P1fang"
@@ -129,24 +120,45 @@ def create_zoom_meeting(topic, start_time):
 
 # ================= EMAIL (MAILERSEND) ================= #
 
-def send_email(to_email, subject, body):
-    try:
-        msg = MIMEMultipart()
-        msg["From"] = EMAIL_ADDRESS
-        msg["To"] = to_email
-        msg["Subject"] = subject
+import os
+import requests
 
-        msg.attach(MIMEText(body, "plain"))
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")
 
-        server = smtplib.SMTP("smtp.gmail.com", 587, timeout=10)
-        server.starttls()
-        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-        server.send_message(msg)
-        server.quit()
+def send_email(to_email, subject, html):
+    if not RESEND_API_KEY:
+        raise Exception("RESEND_API_KEY missing")
 
-        print(f"✅ Email sent to {to_email}")
-    except Exception as e:
-        print("❌ Email error:", e)
+    response = requests.post(
+        "https://api.resend.com/emails",
+        headers={
+            "Authorization": f"Bearer {RESEND_API_KEY}",
+            "Content-Type": "application/json",
+        },
+        json={
+            "from": "MediSure <onboarding@resend.dev>",
+            "to": [to_email],
+            "subject": subject,
+            "html": html,
+        },
+        timeout=10
+    )
+
+    if response.status_code != 200:
+        print("EMAIL ERROR:", response.text)
+        return False
+
+    return True
+
+
+def send_otp_email(email, otp):
+    html = f"""
+    <h2>Password Reset OTP</h2>
+    <h1>{otp}</h1>
+    <p>This OTP is valid for 5 minutes.</p>
+    """
+    return send_email(email, "Your OTP Code", html)
+
 
 
 
@@ -261,31 +273,18 @@ def forgot_password():
         email = request.form["email"]
         otp = random.randint(100000, 999999)
 
-        session["otp"] = otp
+        session["otp"] = str(otp)
         session["email"] = email
+        session["otp_time"] = time.time()
 
-        try:
-            msg = MIMEMultipart()
-            msg["From"] = EMAIL_ADDRESS
-            msg["To"] = email
-            msg["Subject"] = "Your OTP - Health Check System"
+        success = send_otp_email(email, otp)
 
-            body = f"Your OTP is {otp}. Valid for 5 minutes."
-            msg.attach(MIMEText(body, "plain"))
+        if not success:
+            return "Email sending failed"
 
-            server = smtplib.SMTP("smtp.gmail.com", 587, timeout=10)
-            server.starttls()
-            server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-            server.sendmail(EMAIL_ADDRESS, email, msg.as_string())
-            server.quit()
-
-            return redirect(url_for("verify_otp"))
-
-        except Exception as e:
-            return f"Email error: {e}"
+        return redirect(url_for("verify_otp"))
 
     return render_template("forget_password.html")
-
 
 
 
@@ -297,7 +296,14 @@ def forgot_password():
 def verify_otp():
     if request.method == "POST":
         user_otp = request.form["otp"].strip()
-        saved_otp = str(session.get("otp"))
+        saved_otp = session.get("otp")
+        otp_time = session.get("otp_time")
+
+        if not saved_otp or not otp_time:
+            return "OTP expired"
+
+        if time.time() - otp_time > 300:
+            return "OTP expired"
 
         if user_otp == saved_otp:
             session["reset_email"] = session["email"]
@@ -306,6 +312,9 @@ def verify_otp():
         return "INVALID OTP"
 
     return render_template("verify_otp.html")
+
+
+
 
 
 
