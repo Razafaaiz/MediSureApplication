@@ -120,45 +120,28 @@ def create_zoom_meeting(topic, start_time):
 
 # ================= EMAIL (MAILERSEND) ================= #
 
-import os
-import requests
-
 RESEND_API_KEY = os.getenv("RESEND_API_KEY")
+FROM_EMAIL = os.getenv("FROM_EMAIL", "onboarding@resend.dev")
 
-def send_email(to_email, subject, html):
+
+def send_email(to, subject, html):
     response = requests.post(
         "https://api.resend.com/emails",
         headers={
             "Authorization": f"Bearer {RESEND_API_KEY}",
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
         },
         json={
-            "from": "onboarding@resend.dev",
-            "to": [to_email],
+            "from": FROM_EMAIL,
+            "to": [to],
             "subject": subject,
-            "html": html,
+            "html": html
         },
         timeout=10
     )
 
-    print("RESEND STATUS:", response.status_code)
-    print("RESEND RESPONSE:", response.text)
-
+    print("RESEND:", response.status_code, response.text)
     return response.status_code == 200
-
-
-
-def send_otp_email(email, otp):
-    html = f"""
-    <h2>Password Reset OTP</h2>
-    <h1>{otp}</h1>
-    <p>This OTP is valid for 5 minutes.</p>
-    """
-    return send_email(email, "Your OTP Code", html)
-
-
-
-
 
 
 
@@ -285,6 +268,33 @@ def forgot_password():
 
     return render_template("forget_password.html")
 
+@app.route("/forgot-password", methods=["GET", "POST"])
+def forgot():
+    if request.method == "POST":
+        email = request.form["email"]
+
+        otp = random.randint(100000, 999999)
+        session["otp"] = str(otp)
+        session["otp_time"] = time.time()
+        session["email"] = email
+
+        ok = send_email(
+            email,
+            "Your OTP – MediSure",
+            f"""
+            <h2>Password Reset OTP</h2>
+            <h1>{otp}</h1>
+            <p>This OTP is valid for 5 minutes.</p>
+            """
+        )
+
+        if not ok:
+            return "❌ Email sending failed"
+
+        return redirect("/verify")
+
+    return render_template("forget_password.html")
+
 
 
 
@@ -292,27 +302,24 @@ def forgot_password():
 
 
 @app.route("/verify-otp", methods=["GET", "POST"])
-def verify_otp():
+def verify():
     if request.method == "POST":
-        user_otp = request.form["otp"].strip()
+        user_otp = request.form["otp"]
         saved_otp = session.get("otp")
         otp_time = session.get("otp_time")
 
-        if not saved_otp or not otp_time:
+        if not saved_otp:
             return "OTP expired"
 
         if time.time() - otp_time > 300:
             return "OTP expired"
 
         if user_otp == saved_otp:
-            session["reset_email"] = session["email"]
-            return redirect(url_for("reset_password"))
+            return "✅ OTP Verified (SUCCESS)"
 
-        return "INVALID OTP"
+        return "❌ Invalid OTP"
 
     return render_template("verify_otp.html")
-
-
 
 
 
