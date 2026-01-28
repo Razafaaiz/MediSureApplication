@@ -46,13 +46,7 @@ app = Flask(__name__)
 app.secret_key = "super_secret_key_123"
 sqlite3.connect("database.db", timeout=10)
 
-#EMAIL_ADDRESS = "razafaiz003@gmail.com"
-#EMAIL_PASSWORD = "zjphoxqsdhejsgvf"
-#RESEND_API_KEY = re_J5A1KkHB_8gpprJVn6BHGG7Gv2bBJs4ss
-#RESEND_API_KEY = re_J5A1KkHB_8gpprJVn6BHGG7Gv2bBJs4ss
-#FROM_EMAIL=onboarding@resend.dev
-#BREVO_SMTP_LOGIN = a0f158001@smtp-brevo.com
-#BREVO_SMTP_PASSWORD = rjIXKfUSHWATzLs7
+
 
 # ================= ZOOM INTEGRATION ================= #
 ZOOM_ACCOUNT_ID = "4De-CZigQj-6wfHOXRvgUA"
