@@ -210,7 +210,7 @@ Visit: [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
 ## 📸 Screenshots
 
-*(Add screenshots of UI, predictions, OTP emails here)*
+*(View Live by Clicking the Link)
 
 ---
 
@@ -236,3 +236,4 @@ This project is licensed for educational and portfolio use.
 ---
 
 > 💡 *MediSure demonstrates how AI + Web + Secure Infrastructure can be combined into a real‑world healthcare system.*
+
