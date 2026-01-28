@@ -410,15 +410,45 @@ def book_appointment(doctor_id):
         subject = "Doctor Appointment Confirmed"
 
         patient_body = f"""
-Your appointment is confirmed ✅
+<html>
+<body style="font-family: Arial, sans-serif; line-height: 1.6;">
+  <p>Hello 👋,</p>
 
-Doctor: {doctor[0]}
-Date: {date}
-Time: {time_}
+  <p><strong>Your appointment has been successfully confirmed ✅</strong></p>
 
-Join Zoom Call:
-{zoom_link}
+  <p>
+    <strong>Doctor:</strong><br>
+    Dr. A Kumar
+  </p>
+
+  <p>
+    <strong>Date:</strong><br>
+    {date}
+  </p>
+
+  <p>
+    <strong>Time:</strong><br>
+    {time_}
+  </p>
+
+  <p>
+    <strong>Join Zoom Consultation:</strong><br>
+    <a href="{zoom_link}">{zoom_link}</a>
+  </p>
+
+  <p>Please join the meeting 5 minutes before the scheduled time.</p>
+
+  <p>
+    Thank you for choosing <strong>MediSure 💙</strong><br>
+    — MediSure Team<br>
+    Secure & Trusted Healthcare
+  </p>
+</body>
+</html>
 """
+
+ 
+
 
         doctor_body = f"""
 New appointment booked.
