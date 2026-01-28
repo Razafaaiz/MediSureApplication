@@ -469,7 +469,7 @@ def my_appointments():
 
     appointments = cur.fetchall()
     conn.close()
-    appointments = appointments[5:]
+    
     return render_template(
         "my_appointments.html",
         appointments=appointments
